@@ -115,10 +115,13 @@ def firstNetwork():
 	r3.cmd('ip -6 addr add 2020::6:2/112 dev r3-eth1')
 	r3.cmd('ip -6 addr add 2020::7:2/112 dev r3-eth2')
 
-
+ 	# new 
+	r1.cmd('echo 1 > /proc/sys/net/ipv4/ip_forward')
 	r2.cmd('echo 1 > /proc/sys/net/ipv4/ip_forward')
 	r3.cmd('echo 1 > /proc/sys/net/ipv4/ip_forward')
     #ipv6
+    # new
+	r1.cmd('echo 1 > /proc/sys/net/ipv6/conf/all/forwarding')
 	r2.cmd('echo 1 > /proc/sys/net/ipv6/conf/all/forwarding')
 	r3.cmd('echo 1 > /proc/sys/net/ipv6/conf/all/forwarding')
 
