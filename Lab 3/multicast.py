@@ -6,7 +6,7 @@ def main(group: str, port: int):
     client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
     client.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
-    client.bind(('', port))  # '' listens on all interfaces
+    client.bind((group, port))  # '' listens on all interfaces
 
     # Tell the OS to add the socket to the multicast group
     # on all interfaces.
