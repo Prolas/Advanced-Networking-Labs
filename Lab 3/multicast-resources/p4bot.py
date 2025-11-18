@@ -6,7 +6,6 @@ MCAST_GRP = ''
 MCAST_PORT = 0
 file = None
 interval = 1
-
 if len(sys.argv) != 5:
     print('usage: %s <mcast_address> <port> <text_file> <interval>' % sys.argv[0])
     sys.exit(1)
@@ -28,6 +27,7 @@ cl_sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, ttl)
 while True:
     for mesg in tfile:
         mesg = mesg.rstrip()
+        print(mesg)
         cl_sock.sendto(('swcmTV'+mesg).encode(), (MCAST_GRP, MCAST_PORT))
         time.sleep(interval)
     cl_sock.sendto(('swcmTV'+'RWND...').encode(), (MCAST_GRP, MCAST_PORT))
