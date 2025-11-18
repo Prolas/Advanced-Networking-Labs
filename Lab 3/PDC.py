@@ -1,84 +1,85 @@
 import socket
-import ssl
-import pprint
-from datetime import datetime
-from time import sleep
-import subprocess
-import re
-import sys
 import argparse
 
-# 4.8, 0.21
-# 4.8 0.21
 
 def wait_for(client: socket.socket, command: str):
-    client.send(command.encode("utf-8"))
+    """Send command and wait for any response."""
     try:
-        data = client.recv(1 << 5)
+        client.send(command.encode("utf-8"))
+        data = client.recv(1024)  # buffer size increased
+        print(data.decode() != "")
         return True
-    except TimeoutError as e:
+    except (TimeoutError, socket.error):
+        print("TO")
         return False
 
 
+def create_socket(server: str, port: int, af) -> socket.socket:
+    try:
+        infos = socket.getaddrinfo(server, port, af, socket.SOCK_DGRAM)
+        if not infos:
+            return None
+        ip_info = infos[0]
+        sock = socket.socket(af, socket.SOCK_DGRAM)
+        sock.connect(ip_info[4])
+        sock.settimeout(1)
+        return sock
+    except Exception as e:
+        print("Connection failed:", e)
+        return None
+
+
 def main(server: str, port: int):
-    clientIpv4 = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    clientIpv6 = socket.socket(socket.AF_INET6, socket.SOCK_DGRAM)
-    clientIpv4.connect((server, port))
-    clientIpv6.connect((server, port))
-    clientIpv4.settimeout(1)
-    clientIpv6.settimeout(1)
-
-    SOCK: None | socket.socket = None
-
     command = "RESET:20"
-    n = 1   
+    n = 1
     global_count = 0
+
+    client_ipv4 = create_socket(server, port, socket.AF_INET)
+    client_ipv6 = create_socket(server, port, socket.AF_INET6)
+
+    #print(client_ipv4)
+    #print(client_ipv6)
+    sock: None | socket.socket = None
+
     for i in range(n):
         count = 0
         success = False
-        if SOCK:
-            while not success:
-                count += 1
-                success = wait_for(SOCK, command)
+        while not success:
+            count += 1
+            if sock:
+                success = wait_for(client_ipv4, command)
                 if success:
-                    print(f"{i}: {count}")
-                    global_count += count
-
-        else:
-            while not success:
-                count += 1
-                success = wait_for(clientIpv4, command)
-                if success:
-                    SOCK = clientIpv4
-                    print(f"IPv4: {count}")
                     global_count += count
                     break
-
-                success = wait_for(clientIpv6, command)
-                if success:
-                    SOCK = clientIpv6
-                    print(f"IPv6: {count}")
-                    global_count += count
-                    break
+            else:
+                # Try IPv4 first
+                if client_ipv4:
+                    print("Try IPv4")
+                    success = wait_for(client_ipv4, command)
+                    if success:
+                        print("IPv4")
+                        sock = client_ipv4
+                        global_count += count
+                        break
+                # Then try IPv6
+                if client_ipv6:
+                    print("Try IPv6")
+                    success = wait_for(client_ipv6, command)
+                    if success:
+                        print("IPv6")
+                        sock = client_ipv6
+                        global_count += count
+                        break
 
     print(
-        f"Average number of trials: {global_count / n}, probabilty of success: {n /global_count}"
+        f"Average number of trials: {global_count / n}, probability of success: {n / global_count}"
     )
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "server",
-        help="either the IPv4 address of the server or its domain name.",
-        type=str,
-    )
-    parser.add_argument(
-        "port",
-        help="port number of the server",
-        type=int,
-    )
-
+    parser.add_argument("server", help="IPv4/IPv6 address or domain name", type=str)
+    parser.add_argument("port", help="Port number of the server", type=int)
     args = parser.parse_args()
 
     main(args.server, args.port)
