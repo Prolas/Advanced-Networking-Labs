@@ -13,7 +13,7 @@ if len(sys.argv) != 4:
 try:
     MCAST_GRP = sys.argv[1]
     MCAST_PORT = int(sys.argv[2])
-    sciper = int(sys.argv[3])
+    sciper = str(sys.argv[3])
 except:
     print('Invalid parameters')
     print('usage: %s <mcast_address> <port> <sciper>' % sys.argv[0])
