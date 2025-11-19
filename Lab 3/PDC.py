@@ -1,7 +1,7 @@
 import socket
 import argparse
 
-
+# python3 PDC.py advnet.epfl.ch 5004
 def wait_for(client: socket.socket, command: str):
     """Send command and wait for any response."""
     try:
@@ -10,7 +10,7 @@ def wait_for(client: socket.socket, command: str):
         print(data.decode() != "")
         return True
     except (TimeoutError, socket.error):
-        print("TO")
+        #print("TO")
         return False
 
 
@@ -22,7 +22,7 @@ def create_socket(server: str, port: int, af) -> socket.socket:
         ip_info = infos[0]
         sock = socket.socket(af, socket.SOCK_DGRAM)
         sock.connect(ip_info[4])
-        sock.settimeout(1)
+        sock.settimeout(0.5)
         return sock
     except Exception as e:
         print("Connection failed:", e)
@@ -46,30 +46,28 @@ def main(server: str, port: int):
         success = False
         while not success:
             count += 1
-            if sock:
-                success = wait_for(client_ipv4, command)
-                if success:
-                    global_count += count
-                    break
-            else:
-                # Try IPv4 first
-                if client_ipv4:
-                    print("Try IPv4")
-                    success = wait_for(client_ipv4, command)
-                    if success:
-                        print("IPv4")
-                        sock = client_ipv4
-                        global_count += count
-                        break
-                # Then try IPv6
-                if client_ipv6:
-                    print("Try IPv6")
-                    success = wait_for(client_ipv6, command)
-                    if success:
-                        print("IPv6")
-                        sock = client_ipv6
-                        global_count += count
-                        break
+            # if sock:
+            #     success = wait_for(client_ipv4, command)
+            #     if success:
+            #         global_count += count
+            #         break
+            # else:
+            # Try IPv4 first
+            print("Try IPv4")
+            success_ipv4 = wait_for(client_ipv4, command)
+            if success_ipv4:
+                print("IPv4")
+                sock = client_ipv4
+                global_count += count
+            # Then try IPv6
+            print("Try IPv6")
+            success_ipv6 = wait_for(client_ipv6, command)
+            if success_ipv6:
+                print("IPv6")
+                sock = client_ipv6
+                global_count += count
+            success = success_ipv4 or success_ipv6
+                    
 
     print(
         f"Average number of trials: {global_count / n}, probability of success: {n / global_count}"

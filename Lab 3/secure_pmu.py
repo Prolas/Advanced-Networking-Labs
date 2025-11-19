@@ -4,7 +4,8 @@ import argparse
 
 HOST = "127.0.0.1"
 
-
+# python3 secure_pmu.py certificate.crt 345665_key.pem 
+# python3 Part5_PDC.py CMD_short:0 Part5_ca.crt
 def main(port: int, certificate: str, key: str):
     n = 10
     # Create a standard TCP socket
