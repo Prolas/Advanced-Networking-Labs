@@ -171,7 +171,6 @@ def Lab4_Network():
         "/usr/lib/frr/ospfd -d -f /home/advnet/Desktop/lab4/configs/ospfd_r4.cfg -i /home/advnet/Desktop/lab4/run/ospfd_r4.pid -z /home/advnet/Desktop/lab4/run/frr_r4.api -u frr -g frr"
     )
 
-
     r5.cmd(
         "/usr/lib/frr/ospfd -d -f /home/advnet/Desktop/lab4/configs/ospfd_r5.cfg -i /home/advnet/Desktop/lab4/run/ospfd_r5.pid -z /home/advnet/Desktop/lab4/run/frr_r5.api -u frr -g frr"
     )
