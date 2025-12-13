@@ -71,7 +71,7 @@ def run():
     sw1 = net.addSwitch('sw1')
     
     info('\n** Creating Links \n')
-    link_h1sw1 = net.addLink( h1, sw1, delay="250ms")
+    link_h1sw1 = net.addLink( h1, sw1, delay="500ms")
     link_h2sw1 = net.addLink( h2, sw1)
     link_r1sw1 = net.addLink( r1, sw1, intfName1='r1-eth0')
     link_h3r1 = net.addLink( r1, h3, intfName1='r1-eth1', delay="200ms")
