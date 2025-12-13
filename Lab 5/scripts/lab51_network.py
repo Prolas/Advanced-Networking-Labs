@@ -1,5 +1,5 @@
 #!/usr/bin/python
-
+# 1460
 """
 This script creates the network environment for Lab5:
 - Starts all routers, switches and hosts
@@ -105,17 +105,17 @@ def run():
     sw1 = net.addSwitch("sw1")
 
     info("\n** Creating Links \n")
-    link_h1sw1 = net.addLink(h1, sw1)
-    link_h2sw1 = net.addLink(h2, sw1)
-    link_r1sw1 = net.addLink(r1, sw1, intfName1="r1-eth0")
+    # link_h1sw1 = net.addLink(h1, sw1)
+    # link_h2sw1 = net.addLink(h2, sw1)
+    # link_r1sw1 = net.addLink(r1, sw1, intfName1="r1-eth0")
+    # link_h3r1 = net.addLink(r1, h3, intfName1="r1-eth1")
+
+    link_h1sw1 = net.addLink(h1, sw1, cls=TCLink)
+    link_h2sw1 = net.addLink(h2, sw1, cls=TCLink)
+    link_r1sw1 = net.addLink(r1, sw1, intfName1="r1-eth0", cls=TCLink)
     link_h3r1 = net.addLink(
-    r1, h3,
-    intfName1='r1-eth1',
-    cls=TCLink,
-    bw=7,
-    enable_red=True,
-    enable_ecn=True
-)
+        r1, h3, intfName1="r1-eth1", cls=TCLink, bw=7, enable_red=True, enable_ecn=True
+    )
 
     info("\n** Modifying Link Parameters \n")
     """
@@ -133,7 +133,7 @@ def run():
  		enable_red = False,
  		max_queue_size = None 
     """
-    #link_h3r1.intf1.config(bw=7, enable_red=True, enable_ecn=True)
+    #link_h3r1.intf1.config(bw=4, enable_red=True, enable_ecn=True)
 
     net.start()
     info("** Executing custom commands\n")
