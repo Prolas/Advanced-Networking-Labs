@@ -104,16 +104,6 @@ def run():
     h2.cmd('ip route add default via 10.20.0.10')
     h3.cmd('ip route add default via 10.20.1.10')
 
-    # h1.cmd('sysctl -w net.ipv4.tcp_congestion_control=reno')
-    # h2.cmd('sysctl -w net.ipv4.tcp_congestion_control=reno')
-    # h3.cmd('sysctl -w net.ipv4.tcp_congestion_control=reno')
-    # r1.cmd('sysctl -w net.ipv4.tcp_congestion_control=reno')
-
-    # h1.cmd('sysctl -w net.ipv4.tcp_congestion_control=cubic')
-    # h2.cmd('sysctl -w net.ipv4.tcp_congestion_control=cubic')
-    # h3.cmd('sysctl -w net.ipv4.tcp_congestion_control=cubic')
-    # r1.cmd('sysctl -w net.ipv4.tcp_congestion_control=cubic')
-
     #Enable Xterm window for every host
     info('** Enabling xterm for hosts only\n')
     # We check if the display is available
