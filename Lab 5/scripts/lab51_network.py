@@ -1,7 +1,5 @@
 #!/usr/bin/python
 #1460
-#cat /proc/sys/net/ipv4/tcp_congestion_control
-
 """
 This script creates the network environment for Lab5:
 - Starts all routers, switches and hosts
@@ -75,16 +73,8 @@ def run():
     link_h1sw1 = net.addLink( h1, sw1)
     link_h2sw1 = net.addLink( h2, sw1)
     link_r1sw1 = net.addLink( r1, sw1, intfName1='r1-eth0')
-    # link_h3r1 = net.addLink( r1, h3, intfName1='r1-eth1')
-    link_h3r1 = net.addLink(
-    r1, h3,
-    intfName1='r1-eth1',
-    cls=TCLink,
-    bw=7,
-    enable_red=True,
-    enable_ecn=True
-)
-
+    link_h3r1 = net.addLink( r1, h3, intfName1='r1-eth1')
+    
     info('\n** Modifying Link Parameters \n')
     """
         Default parameters for links:
@@ -101,7 +91,7 @@ def run():
  		enable_red = False,
  		max_queue_size = None 
     """
-    #link_h3r1.intf1.config( bw=7, enable_red=True ,  enable_ecn=True)
+    link_h3r1.intf1.config( bw=7, enable_red=True ,  enable_ecn=True)
     
     net.start()
     info('** Executing custom commands\n')
@@ -113,6 +103,7 @@ def run():
     h1.cmd('ip route add default via 10.20.0.10')
     h2.cmd('ip route add default via 10.20.0.10')
     h3.cmd('ip route add default via 10.20.1.10')
+
 
     #Enable Xterm window for every host
     info('** Enabling xterm for hosts only\n')
