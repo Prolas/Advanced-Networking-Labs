@@ -91,7 +91,7 @@ def run():
  		enable_red = False,
  		max_queue_size = None 
     """
-    link_h3r1.intf1.config( bw=7, enable_red=True,  enable_ecn=True max_queue_size=1000)
+    link_h3r1.intf1.config( bw=7, enable_red=True,  enable_ecn=True, max_queue_size=1000)
     
     net.start()
     info('** Executing custom commands\n')
