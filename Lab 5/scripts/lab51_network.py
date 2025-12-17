@@ -1,12 +1,11 @@
 #!/usr/bin/python
-#1460
+
 """
 This script creates the network environment for Lab5:
 - Starts all routers, switches and hosts
 - You need to choose either Topo1 or Topo2
 - XTerm window launched for all devices.
 """
-# cat /proc/sys/net/ipv4/tcp_congestion_control
 # Needed to check for display status 
 import inspect
 import os
@@ -71,10 +70,10 @@ def run():
     sw1 = net.addSwitch('sw1')
     
     info('\n** Creating Links \n')
-    link_h1sw1 = net.addLink( h1, sw1, delay="500ms")
+    link_h1sw1 = net.addLink( h1, sw1)
     link_h2sw1 = net.addLink( h2, sw1)
     link_r1sw1 = net.addLink( r1, sw1, intfName1='r1-eth0')
-    link_h3r1 = net.addLink( r1, h3, intfName1='r1-eth1', delay="200ms")
+    link_h3r1 = net.addLink( r1, h3, intfName1='r1-eth1')
     
     info('\n** Modifying Link Parameters \n')
     """
@@ -105,11 +104,6 @@ def run():
     h2.cmd('ip route add default via 10.20.0.10')
     h3.cmd('ip route add default via 10.20.1.10')
 
-    # Set TCP congestion control to Reno
-    h1.cmd('sysctl -w net.ipv4.tcp_congestion_control=reno')
-    h2.cmd('sysctl -w net.ipv4.tcp_congestion_control=reno')
-    h3.cmd('sysctl -w net.ipv4.tcp_congestion_control=reno')
-    r1.cmd('sysctl -w net.ipv4.tcp_congestion_control=reno')
 
     #Enable Xterm window for every host
     info('** Enabling xterm for hosts only\n')
