@@ -91,7 +91,7 @@ def run():
  		enable_red = False,
  		max_queue_size = None 
     """
-    link_h3r1.intf1.config( bw=7, enable_red=True,  enable_ecn=True, max_queue_size=1000)
+    link_h3r1.intf1.config( bw=7, enable_red=True,  enable_ecn=True)
     
     net.start()
     info('** Executing custom commands\n')
@@ -109,10 +109,7 @@ def run():
     info('** Enabling xterm for hosts only\n')
     # We check if the display is available
     hosts = [ h1, h2, h3, r1 ]
-    # for n in [h1, h2, h3, r1]:
-    #     n.cmd('sysctl -w net.ipv4.tcp_ecn=1')
-    #     n.cmd('sysctl -w net.ipv4.tcp_congestion_control=dctcp')
-
+ 
     if 'DISPLAY' not in os.environ:
         error( "Error starting terms: Cannot connect to display\n" )
         return
