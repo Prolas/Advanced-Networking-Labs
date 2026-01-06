@@ -22,9 +22,9 @@ def Lab6_Network():
     #                        r1    r2    r3    r4    r5
     daemons = [
         [1, 1, 1, 1, 1],  # zebra
-        [1, 1, 1, 1, 1],  # bgpd
-        [0, 0, 0, 0, 0],  # ospfd
-        [0, 0, 0, 0, 0],
+        [1, 1, 1, 1, 0],  # bgpd
+        [0, 0, 1, 1, 1],  # ospfd
+        [0, 0, 1, 1, 1],
     ]  # ospf6d
 
     "Create an empty network and add nodes to it."
@@ -112,26 +112,6 @@ def Lab6_Network():
 
     r5.cmd("sysctl -w net.ipv4.conf.r5-eth1.rp_filter=0")
     r5.cmd("sysctl -w net.ipv4.conf.r5-eth2.rp_filter=0")
-
-    r1.cmd(
-        "/usr/lib/frr/zebra -d -f /home/advnet/Desktop/lab6/configs/zebra_r1.cfg -i /home/advnet/Desktop/lab6/run/zebra_r1.pid -z /home/advnet/Desktop/lab6/run/frr_r1.api -u frr -g frr"
-    )
-    
-    r2.cmd(
-        "/usr/lib/frr/zebra -d -f /home/advnet/Desktop/lab6/configs/zebra_r2.cfg -i /home/advnet/Desktop/lab6/run/zebra_r2.pid -z /home/advnet/Desktop/lab6/run/frr_r2.api -u frr -g frr"
-    )
-    
-    r3.cmd(
-        "/usr/lib/frr/zebra -d -f /home/advnet/Desktop/lab6/configs/zebra_r3.cfg -i /home/advnet/Desktop/lab6/run/zebra_r3.pid -z /home/advnet/Desktop/lab6/run/frr_r3.api -u frr -g frr"
-    )
-    
-    r4.cmd(
-        "/usr/lib/frr/zebra -d -f /home/advnet/Desktop/lab6/configs/zebra_r4.cfg -i /home/advnet/Desktop/lab6/run/zebra_r4.pid -z /home/advnet/Desktop/lab6/run/frr_r4.api -u frr -g frr"
-    )
-    
-    r5.cmd(
-        "/usr/lib/frr/zebra -d -f /home/advnet/Desktop/lab6/configs/zebra_r5.cfg -i /home/advnet/Desktop/lab6/run/zebra_r5.pid -z /home/advnet/Desktop/lab6/run/frr_r5.api -u frr -g frr"
-    )
 
     info("*** Starting network\n")
     net.start()
